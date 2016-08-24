@@ -12,7 +12,7 @@ Create a VPN using foxpass.com for LDAP auth
 * SERVER_PEM -- your public cert (can also be mounted to /etc/openvpn/server.pem)
 
 ## Optional Variables
-* BINDER_NAME -- Foxpass binder name
+* BINDER_NAME -- Foxpass binder name (defaults to "openvpn")
 * DNS_1 -- primary DNS when PUSH_DNS is true (defaults to 208.67.222.222)
 * DNS_2 -- secondary DNS when PUSH_DNS is true (defaults to 208.67.220.220)
 * GROUP_FILTER -- restrict VPN access to an LDAP group
@@ -27,7 +27,7 @@ Create a VPN using foxpass.com for LDAP auth
 
 These examples assume that all files described above that can be host-mounted are host-mounted or added with a derivative Dockerfile.
 
-### Route all traffic
+### Route all traffic.
 ```
 docker run -d \
    -e BIND_PASSWORD="foobar" \
