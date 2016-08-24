@@ -5,7 +5,7 @@ Create a VPN using foxpass.com for LDAP auth
 ## Required Variables
 * BIND_PASSWORD -- your Foxpass binder password
 * CA_PEM -- CA cert (can also be mounted to /etc/openvpn/ca.pem)
-* DOMAIN -- your subdomain. e.g. "lendup"
+* DOMAIN -- your subdomain. e.g. "nytimes"
 * DH_PEM -- DH cert (can also be mounted to /etc/openvpn/dh.pem)
 * MGMTPASS -- openvpn management password (can also be mounted to /etc/openvpn/mgmtpass)
 * SERVER_KEY -- your private key (can also be mounted to /etc/openvpn/server.key)
