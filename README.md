@@ -31,7 +31,7 @@ These examples assume that all files described above that can be host-mounted ar
 ```
 docker run -d \
    -e BIND_PASSWORD="foobar" \
-   -e DOMAIN="lendup" \
+   -e DOMAIN="mydomain" \
    -p 1194:1194 \
    --cap-add NET_ADMIN \
    --device /dev/net/tun \
@@ -42,7 +42,7 @@ docker run -d \
 ```
 docker run -d \
    -e BIND_PASSWORD="foobar" \
-   -e DOMAIN="lendup" \
+   -e DOMAIN="mydomain" \
    -e GROUP_FILTER="engineer" \
    -e PUSH_DNS="false" \
    -e ROUTE_ALL_TRAFFIC="false" \
