@@ -1,0 +1,37 @@
+mode server
+tls-server
+server {{env "VPN_NET"}} 255.255.255.0
+dh dh.pem
+ca ca.pem
+key server.key
+cert server.pem
+client-to-client
+reneg-sec 86400
+keepalive 10 30 # very low value to cope with ever-changing dynamic addresses
+max-clients 50
+persist-key
+persist-tun
+client-cert-not-required
+username-as-common-name
+
+{{ if eq (env "ROUTE_ALL_TRAFFIC") "true" }}
+push "redirect-gateway def1"
+{{ else }}
+push "route {{env "ROUTE_SUBNET"}}"
+{{ end }}
+
+{{ if eq (env "PUSH_DNS") "true" }}
+push "dhcp-option DNS {{ env "DNS_1" }}"
+push "dhcp-option DNS {{ env "DNS_2" }}"
+{{ end }}
+
+plugin /usr/lib/openvpn/openvpn-auth-ldap.so "/etc/openvpn/auth_ldap.conf"
+
+dev tun
+script-security 3
+
+proto {{env "PROTO"}}
+port 1194
+status openvpn-status-1194.log
+
+management 0.0.0.0 5000 mgmtpass

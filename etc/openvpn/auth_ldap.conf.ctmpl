@@ -1,0 +1,41 @@
+<LDAP>
+# LDAP server URL
+URL ldaps://ldap.foxpass.com
+
+BindDN cn={{env "BINDER_NAME"}},dc={{env "DOMAIN"}},dc={{env "TLD"}}
+
+# Bind Password
+Password "{{env "BIND_PASSWORD"}}"
+
+# Network timeout (in seconds)
+Timeout 15
+
+# Disable Start TLS
+TLSEnable no
+
+# Follow LDAP Referrals (anonymously)
+FollowReferrals yes
+
+# Cipher Suite
+# The defaults are usually fine here
+# TLSCipherSuite ALL:!ADH:@STRENGTH
+</LDAP>
+
+<Authorization>
+# Base DN
+BaseDN "ou=people,dc={{env "DOMAIN"}},dc={{env "TLD"}}"
+
+# User Search Filter
+SearchFilter "(&(uid=%u))"
+
+{{ if (env "GROUP_FILTER") }}
+RequireGroup true
+<Group>
+  BaseDN "ou=groups,dc={{env "DOMAIN"}},dc={{env "TLD"}}"
+  SearchFilter "(cn={{env "GROUP_FILTER"}})"
+  MemberAttribute "member"
+</Group>
+{{ else }}
+RequireGroup false
+{{ end }}
+</Authorization>
