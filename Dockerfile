@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM ubuntu:trusty
 
 # override to udp at runtime if desired
 ENV PROTO tcp
@@ -22,6 +22,8 @@ ENV TLD com
 #ENV DOMAIN mydomain
 #ENV BIND_PASSWORD mydomain
 
+RUN apt-get -qy update && apt-get -qy install software-properties-common
+RUN add-apt-repository ppa:foxpass/openvpn-auth-ldap
 RUN apt-get -qy update && apt-get -qy install curl iptables openvpn openvpn-auth-ldap unzip
 RUN curl -o /tmp/consul-template.zip -L $CONSUL_TEMPLATE_URL && ( cd /usr/bin && unzip /tmp/consul-template.zip )
 
