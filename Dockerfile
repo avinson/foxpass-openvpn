@@ -1,4 +1,6 @@
-FROM ubuntu:trusty
+ARG OS_RELEASE=trusty
+FROM ubuntu:${OS_RELEASE}
+ARG OS_RELEASE
 
 # override to udp at runtime if desired
 ENV PROTO tcp
@@ -22,9 +24,14 @@ ENV TLD com
 #ENV DOMAIN mydomain
 #ENV BIND_PASSWORD mydomain
 
-RUN apt-get -qy update && apt-get -qy install software-properties-common
+ENV OPENVPN_BRANCH "release/2.4"
+
+RUN apt-get -qy update && apt-get -qy install curl software-properties-common
 RUN add-apt-repository ppa:foxpass/openvpn-auth-ldap
-RUN apt-get -qy update && apt-get -qy install curl iptables openvpn openvpn-auth-ldap unzip
+RUN sh -c 'curl -fsSL https://swupdate.openvpn.net/repos/repo-public.gpg | sudo apt-key add -'
+RUN sh -c 'echo "deb http://build.openvpn.net/debian/openvpn/${OPENVPN_BRANCH} ${OS_RELEASE} main" > /etc/apt/sources.list.d/openvpn-aptrepo.list'
+RUN apt-get update && apt-get install -y iptables openvpn openvpn-auth-ldap unzip && rm -rf /var/lib/apt/lists/*
+
 RUN curl -o /tmp/consul-template.zip -L $CONSUL_TEMPLATE_URL && ( cd /usr/bin && unzip /tmp/consul-template.zip )
 
 ADD etc/openvpn/ /etc/openvpn/
