@@ -5,19 +5,31 @@ dh dh.pem
 ca ca.pem
 key server.key
 cert server.pem
+cipher {{env "CIPHER"}}
 client-to-client
-reneg-sec 86400
-keepalive 10 30 # very low value to cope with ever-changing dynamic addresses
-max-clients 50
+reneg-sec {{env "RENEG_SECONDS"}}
+keepalive {{env "PING_SECONDS"}} {{env "PING_RESTART_SECONDS"}}
+max-clients {{env "MAX_CLIENTS"}}
 persist-key
 persist-tun
 client-cert-not-required
 username-as-common-name
 
+{{ if (env "TUN_MTU") }}
+tun-mtu {{ env "TUN_MTU" }}
+{{ end }}
+{{ if (env "MSSFIX") }}
+mssfix {{ env "MSSFIX" }}
+{{ end }}
+
 {{ if eq (env "ROUTE_ALL_TRAFFIC") "true" }}
 push "redirect-gateway def1"
 {{ else }}
 push "route {{env "ROUTE_SUBNET"}}"
+{{ end }}
+# optional additional route
+{{ if (env "ROUTE_SUBNET_2") }}
+push "route {{env "ROUTE_SUBNET_2"}}"
 {{ end }}
 
 {{ if eq (env "PUSH_DNS") "true" }}
@@ -33,5 +45,9 @@ script-security 3
 proto {{env "PROTO"}}
 port 1194
 status openvpn-status-1194.log
+{{ if eq (env "ENABLE_LOG") "true" }}
+log /var/log/openvpn.log
+verb {{ env "LOG_VERBOSITY" }}
+{{ end }}
 
 management 0.0.0.0 5000 mgmtpass

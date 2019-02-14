@@ -13,6 +13,8 @@ Create a VPN using foxpass.com for LDAP auth
 
 ## Optional Variables
 * BINDER_NAME -- Foxpass binder name (defaults to "openvpn")
+* BLOCK_PORTS -- Block outbound ports. e.g. BLOCK_PORTS="4646 5050"
+* CIPHER -- defaults to AES-256-CBC
 * DNS_1 -- primary DNS when PUSH_DNS is true (defaults to 208.67.222.222)
 * DNS_2 -- secondary DNS when PUSH_DNS is true (defaults to 208.67.220.220)
 * GROUP_FILTER -- restrict VPN access to an LDAP group
@@ -20,6 +22,7 @@ Create a VPN using foxpass.com for LDAP auth
 * PUSH_DNS -- should be we push DNS servers to clients? (defaults to true)
 * ROUTE_ALL_TRAFFIC -- should we route all traffic? (defaults to true)
 * ROUTE_SUBNET -- if not routing all traffic, what should we route (this must be set if ROUTE_ALL_TRAFFIC is not true)
+* ROUTE_SUBNET_2 -- an additional subnet to route through the tunnel
 * TLD -- top-level domain (defaults to "com")
 * VPN_NET -- the VPN subnet (defaults to 10.10.250.0, this should not overlap with ROUTE_SUBNET)
 
